@@ -27,8 +27,8 @@ namespace UnitTests
 
             new User()
             {
-                email = "testuser1@email.com",
-                Username = "TestUser1",
+                email = "testuser2@email.com",
+                Username = "TestUser2",
             }
         };
 
