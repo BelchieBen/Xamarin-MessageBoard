@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MessageBoard.ViewModels" 
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:behaviours="clr-namespace:MessageBoard.Behaviours"
+             xmlns:fontawesome="clr-namespace:MessageBoard.Styles"
+             x:Class="MessageBoard.Views.HomepageView"
+             NavigationPage.HasBackButton="False"
+             Title="Welcome ">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+             Command="{Binding RefreshCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}"
+                                 Glyph="{x:Static fontawesome:FontAwesomeIcons.SyncAlt}"
+                                 Size="Medium"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+
+        <ToolbarItem 
+             Command="{Binding NewCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}"
+                                 Glyph="{x:Static fontawesome:FontAwesomeIcons.Plus}"
+                                 Size="Medium"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+
+        <StackLayout VerticalOptions="FillAndExpand">
+            <ActivityIndicator IsRunning="true" IsVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" Color="#e43f8f" Margin="0,20,0,0"/>
+            <SearchBar
+                Placeholder="Search Messages"
+                TextTransform="Lowercase"
+                Text="{Binding SearchText}"
+                x:Name="SearchBar"
+                SearchCommand="{Binding SearchCommand, Mode=TwoWay}"
+                SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}">
+                <SearchBar.Behaviors>
+                    <behaviours:SearchbarBehaviour/>
+                </SearchBar.Behaviors>
+            </SearchBar>
+            <ListView 
+                    HasUnevenRows="True"
+                    ItemsSource="{Binding Messages}" 
+                    Margin="20,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame  
+                                HasShadow="True" 
+                                CornerRadius="10"
+                                Margin="16" 
+                                Padding="16" 
+                                VerticalOptions="Start" 
+                                BackgroundColor="White" 
+                                BorderColor="Gray">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomepageViewModel}}, Path=MessageSelectedCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                                <Grid 
+                                    RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                                    ColumnDefinitions="Auto"
+                                    VerticalOptions="FillAndExpand">
+                                    <Label
+                                        Grid.Row="0"
+                                        Text="{Binding MessageTitle}" 
+                                        VerticalOptions="CenterAndExpand" 
+                                        FontSize="Small"/>
+                                    <Label 
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="CenterAndExpand"
+                                        Text="{Binding PostDate}" 
+                                        FontSize="Micro"/>
+                                    <Label 
+                                        Grid.Row="1"
+                                        Text="{Binding User}" 
+                                        FontSize="Micro"/>
+                                    <BoxView 
+                                        Grid.ColumnSpan="2"
+                                        Grid.Row="2"
+                                        Color="Gray" 
+                                        HeightRequest="2" 
+                                        HorizontalOptions="Fill"/>
+                                    <Label 
+                                        Grid.ColumnSpan="2"
+                                        Grid.Row="4"
+                                        Text="{Binding Description}"/>
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+
+            <Button 
+                Text="Logout" 
+                BackgroundColor="#e43f8f" 
+                TextColor="White" 
+                Margin="20,20" 
+                CornerRadius="10"
+                Command="{Binding LogoutCommand}"/>
+            
+        </StackLayout>
+        
+        <!--<Grid VerticalOptions="FillAndExpand" BackgroundColor="red">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            
+
+            <Grid VerticalOptions="FillAndExpand" BackgroundColor="#f4f5f6" Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+               
+
+               
+            </Grid>
+        </Grid>-->
+    </ContentPage.Content>
+</ContentPage>

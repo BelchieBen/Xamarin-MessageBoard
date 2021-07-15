@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MessageBoard.Views.MessageDetailReadonlyView"
+             Title="View Message"
+             NavigationPage.HasBackButton="False">
+    <ContentPage.Content>
+        <Frame 
+            VerticalOptions="CenterAndExpand"  
+            Margin="20"  
+            HasShadow="True" 
+            CornerRadius="10" 
+            Padding="16" 
+            BackgroundColor="White" 
+            BorderColor="Gray">
+            <Grid VerticalOptions="FillAndExpand" BackgroundColor="#f4f5f6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="2"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding SelectedMessage.MessageTitle} " 
+                    FontSize="Title"
+                    FontAttributes="Bold"/>
+
+                <Label
+                    Grid.Row="1"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding SelectedMessage.PostDate}" 
+                    FontSize="Small"/>
+                <Label
+                    Grid.Row="2"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding SelectedMessage.User}" 
+                    FontSize="Small"/>
+                <BoxView 
+                    Grid.ColumnSpan="2"
+                    Grid.Row="3"
+                    HorizontalOptions="Fill" 
+                    Color="Gray" 
+                    HeightRequest="2"/>
+
+                <Label
+                    Grid.ColumnSpan="2"
+                    Grid.Row="4"
+                    Text="{Binding SelectedMessage.Description}" 
+                    FontSize="Small"
+                    Margin="0,0,0,15"/>
+
+                <Button
+                    Grid.ColumnSpan="2"
+                    Grid.Row="5"
+                    Command="{Binding CancelCommand}"
+                    Text="Go Back" 
+                    CornerRadius="10"
+                    BackgroundColor="#e23e8c" 
+                    TextColor="White"/>
+
+            </Grid>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

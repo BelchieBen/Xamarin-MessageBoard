@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "187119314139",
+    "project_id": "xamarinauth2-fefde",
+    "storage_bucket": "xamarinauth2-fefde.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187119314139:android:89b58d40733204644018fe",
+        "android_client_info": {
+          "package_name": "com.companyname.messageboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187119314139-snf7vhsr45a4lnilcedm0gqnen0gv5dg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk1tSu58uTas7ti1868yBFdj9g9oe3zp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187119314139-snf7vhsr45a4lnilcedm0gqnen0gv5dg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
