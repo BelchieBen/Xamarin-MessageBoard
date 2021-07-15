@@ -15,5 +15,6 @@ namespace MessageBoard.Services
         Task GoTo(string key);
         Task NavigateTo(string key, object parameter = null);
         void NavigteAsync(string key);
+        void PopPage();
     }
 }

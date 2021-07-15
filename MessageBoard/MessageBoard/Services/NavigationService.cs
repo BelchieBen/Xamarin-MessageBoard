@@ -52,6 +52,11 @@ namespace MessageBoard.Services
         {
             
         }
+
+        public async void PopPage()
+        {
+            await Application.Current.MainPage.Navigation.PopAsync();
+        }
     }
 
     public static class NavigationExtensions

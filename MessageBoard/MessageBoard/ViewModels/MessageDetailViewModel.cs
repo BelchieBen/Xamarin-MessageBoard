@@ -19,7 +19,7 @@ namespace MessageBoard.ViewModels
         private INavigationService _navigationService;
 
         public AsyncCommand SaveCommand { get; }
-        public AsyncCommand CancelCommand { get; }
+        public ICommand CancelCommand { get; }
         public ICommand DeleteCommand { get; }
 
         public Message SelectedMessage
@@ -39,7 +39,7 @@ namespace MessageBoard.ViewModels
 
             SelectedMessage = new Message();
             SaveCommand = new AsyncCommand(() => OnSaveCommand ());
-            CancelCommand = new AsyncCommand(() => OnCancelCommand ());
+            CancelCommand = new Xamarin.Forms.Command(OnCancelCommand);
             DeleteCommand = new AsyncCommand(() => OnDeleteCommand());
 
 
@@ -62,15 +62,15 @@ namespace MessageBoard.ViewModels
              _navigationService.GoBack();
         }
 
-        public async Task OnCancelCommand()
+        public void OnCancelCommand()
         {
-            await Application.Current.MainPage.Navigation.PopAsync();
+             _navigationService.PopPage();
         }
 
         public async Task OnDeleteCommand()
         {
             await _messageDataService.DeleteFirebaseMessage(SelectedMessage.MessageTitle, SelectedMessage.Description, SelectedMessage.Id);
-            await Application.Current.MainPage.Navigation.PopAsync();
+            _navigationService.PopPage();
         }
 
         public override void Initialize(object parameter)

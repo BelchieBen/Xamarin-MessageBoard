@@ -15,7 +15,7 @@ namespace MessageBoard.ViewModels
     public class LoginViewModel: BaseViewModel
     {
         private INavigationService _navigationService;
-        IFirebaseAuth _auth;
+        private IFirebaseAuth _auth;
         public ICommand LoginCommand { get; }
         public ICommand GoSignupCommand { get; }
 
@@ -41,10 +41,10 @@ namespace MessageBoard.ViewModels
             }
         }
 
-        public LoginViewModel(NavigationService navigationService)
+        public LoginViewModel(INavigationService navigationService, IFirebaseAuth auth)
         {
             _navigationService = navigationService;
-            _auth = DependencyService.Get<IFirebaseAuth>();
+            _auth = auth;
             LoginCommand = new AsyncCommand(() => OnLoginCommand());
             GoSignupCommand = new AsyncCommand(() => OnGoSignupCommand());
 
