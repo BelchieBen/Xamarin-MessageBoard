@@ -10,6 +10,14 @@
              Title="Welcome ">
     <ContentPage.ToolbarItems>
         <ToolbarItem 
+             Command="{Binding ProfileCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}"
+                                 Glyph="{x:Static fontawesome:FontAwesomeIcons.UserAlt}"
+                                 Size="Medium"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem 
              Command="{Binding RefreshCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}"

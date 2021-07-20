@@ -9,6 +9,7 @@ using Xunit;
 using Xunit.Abstractions;
 using MessageBoard.Models;
 using System.Collections.Generic;
+using MessageBoard.Styles;
 
 namespace UnitTests
 {
@@ -16,6 +17,7 @@ namespace UnitTests
     {
         private readonly Mock<INavigationService> _mockNavigationService;
         private readonly Mock<IMessageDataService> _mockMessageDataService;
+        private readonly Mock<IDialogService> _mockDialogService;
         private List<User> users = new List<User>
         {
             new User()
@@ -47,13 +49,14 @@ namespace UnitTests
             Xamarin.Forms.Mocks.MockForms.Init();
             _mockMessageDataService = new Mock<IMessageDataService>();
             _mockNavigationService = new Mock<INavigationService>();
+            _mockDialogService = new Mock<IDialogService>();
         }
 
         [Fact]
         public async Task SaveCommandTestNew()
         {
             // Arrange
-            MessageDetailViewModel vm = new MessageDetailViewModel(_mockMessageDataService.Object, _mockNavigationService.Object);
+            MessageDetailViewModel vm = new MessageDetailViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _mockDialogService.Object);
             var newMessage = GetMessage();
             newMessage.User = null;
             vm.SelectedMessage = newMessage;
@@ -70,7 +73,7 @@ namespace UnitTests
         public async Task SaveCommandTestUpdate()
         {
             // Arrange
-            MessageDetailViewModel vm = new MessageDetailViewModel(_mockMessageDataService.Object, _mockNavigationService.Object);
+            MessageDetailViewModel vm = new MessageDetailViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _mockDialogService.Object);
             var newMessage = GetMessage();
             vm.SelectedMessage = newMessage;
 
@@ -86,7 +89,7 @@ namespace UnitTests
         public void CancelCommandtest()
         {
             // Arrange 
-            MessageDetailViewModel vm = new MessageDetailViewModel(_mockMessageDataService.Object, _mockNavigationService.Object);
+            MessageDetailViewModel vm = new MessageDetailViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _mockDialogService.Object);
 
             // Act
             vm.OnCancelCommand();
@@ -99,7 +102,7 @@ namespace UnitTests
         public async Task DeleteCommandTest()
         {
             // Arrange
-            MessageDetailViewModel vm = new MessageDetailViewModel(_mockMessageDataService.Object, _mockNavigationService.Object);
+            MessageDetailViewModel vm = new MessageDetailViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _mockDialogService.Object);
             var newMessage = GetMessage();
             vm.SelectedMessage = newMessage;
 
@@ -107,6 +110,7 @@ namespace UnitTests
             await vm.OnDeleteCommand();
 
             // Assert
+            _mockDialogService.Verify(x => x.ShowToastMessage(Strings.Message_Deleted));
             _mockMessageDataService.Verify(x => x.DeleteFirebaseMessage(newMessage.MessageTitle, newMessage.Description, newMessage.Id));
             _mockNavigationService.Verify(x => x.PopPage());
         }

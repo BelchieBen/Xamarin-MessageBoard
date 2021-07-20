@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fontawesome="clr-namespace:MessageBoard.Styles"
+             xmlns:svgg="clr-namespace:FFImageLoading.Cache;assembly=FFImageLoading"
+             xmlns:svgImg="clr-namespace:FFImageLoading;assembly=FFImageLoading"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="MessageBoard.Views.ProfileView"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid HorizontalOptions="CenterAndExpand" 
+              VerticalOptions="CenterAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ContentView BackgroundColor="Blue" Grid.Row="1"/>
+            <ContentView BackgroundColor="Yellow" Grid.Row="2"/>
+            <Image Grid.Row="0" 
+                   VerticalOptions="Fill"
+                   Aspect="AspectFill"
+                   Source="new_profile_background.png"/>
+            <Image Grid.Row="0"
+                   Margin="70"
+                   Source="profile.png"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Text="User 1"
+                       Grid.Row="3"
+                       Grid.Column="1"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"
+                       FontSize="Medium"/>
+                <Label Text="User1@email.com"
+                       Grid.Row="3"
+                       Grid.Column="0"
+                       HorizontalOptions="Center"
+                       VerticalOptions="End"
+                       Margin="0,0,0,10"/>
+            </Grid>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

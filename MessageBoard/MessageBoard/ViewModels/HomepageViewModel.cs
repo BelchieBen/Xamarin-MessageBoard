@@ -13,6 +13,7 @@ using MvvmHelpers.Commands;
 using Xamarin.Essentials;
 using Acr.UserDialogs;
 using System.Linq;
+using MessageBoard.Styles;
 
 namespace MessageBoard.ViewModels
 {
@@ -22,10 +23,12 @@ namespace MessageBoard.ViewModels
         private IMessageDataService _messageDataService;
         private INavigationService _navigationService;
         private IFirebaseAuth _auth;
+        private IDialogService _dialogService;
 
         public ICommand RefreshCommand { get; }
         public ICommand NewCommand { get; }
         public ICommand LogoutCommand { get; }
+        public ICommand ProfileCommand { get; }
         public AsyncCommand<Message> MessageSelectedCommand { get; }
         public AsyncCommand SearchCommand { get; }
 
@@ -39,17 +42,20 @@ namespace MessageBoard.ViewModels
             }
         }
 
-        public HomepageViewModel(IMessageDataService messageDataService, INavigationService navigationService, IFirebaseAuth auth)
+        public HomepageViewModel(IMessageDataService messageDataService, INavigationService navigationService, IFirebaseAuth auth, IDialogService dialogService)
         {
             Messages = new ObservableCollection<Message>();
             _messageDataService = messageDataService;
             _navigationService = navigationService;
+            _dialogService = dialogService;
 
             RefreshCommand = new AsyncCommand(() => OnRefreshCommand());
             NewCommand = new AsyncCommand(() => OnNewCommand());
             LogoutCommand = new AsyncCommand(() => OnLogoutCommand());
+            ProfileCommand = new MvvmHelpers.Commands.Command(OnProfileCommand);
             SearchCommand = new AsyncCommand(() => OnSearchCommand());
             MessageSelectedCommand = new AsyncCommand<Message>(OnMessageSelectedCommand);
+
             _auth = auth;
             Task.Run(async () => await FetchMessages());
             _messageDataService.MessageUpdated += OnUpdateMessage;
@@ -79,7 +85,7 @@ namespace MessageBoard.ViewModels
                 var current = Connectivity.NetworkAccess;
                 if (current == NetworkAccess.None)
                 {
-                    UserDialogs.Instance.Alert("You have internet connection, please restore connection and continue", "Refreh error", "Ok");
+                    await _dialogService.ShowDialogAsync(Strings.No_Connection, Strings.Refresh_error, Strings.Ok);
                 }
                 else
                 {
@@ -93,10 +99,7 @@ namespace MessageBoard.ViewModels
             finally
             {
                 IsBusy = false;
-            }
-            
-            //Messages = new ObservableCollection<Message>(await _messageDataService.GetMessages());
-            
+            }          
         }
 
         public async Task OnRefreshCommand()
@@ -130,6 +133,11 @@ namespace MessageBoard.ViewModels
             await _navigationService.GoTo(ViewNames.LoginPage);
         }
 
+        public void OnProfileCommand()
+        {
+            _navigationService.GoTo(ViewNames.ProfileView);
+        }
+
         private string _searchText;
         public string SearchText
         {
@@ -143,7 +151,7 @@ namespace MessageBoard.ViewModels
         public async Task OnSearchCommand()
         {
             await FetchMessages();
-            Messages = new ObservableCollection<Message>(Messages.Where((Message) => Message.MessageTitle.ToLower().Contains(SearchText)));
+            Messages = new ObservableCollection<Message>(Messages.Where((Message) => Message.MessageTitle.ToLower().Contains(SearchText.ToLower())));
         }
     }
 }

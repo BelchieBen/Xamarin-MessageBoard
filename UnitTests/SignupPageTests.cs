@@ -9,10 +9,11 @@ using Xunit;
 using Xunit.Abstractions;
 using MessageBoard.Models;
 using System.Collections.Generic;
+using MessageBoard.Styles;
 
 namespace UnitTests
 {
-    public class LoginTests
+    public class SignupPageTests
     {
         private readonly Mock<INavigationService> _mockNavigationService;
         private readonly Mock<IFirebaseAuth> _auth;
@@ -33,53 +34,37 @@ namespace UnitTests
                 Username = "TestUser2",
             }
         };
-
-        public LoginTests()
+        public SignupPageTests()
         {
             Xamarin.Forms.Mocks.MockForms.Init();
             _mockNavigationService = new Mock<INavigationService>();
-            _mockDialogService = new Mock<IDialogService>();
             _auth = new Mock<IFirebaseAuth>();
+            _mockDialogService = new Mock<IDialogService>();
         }
 
         [Fact]
-        public async Task LoginCommandTest()
+        public async Task SignupUserCommandTest()
         {
-            // Arrange 
-            LoginViewModel vm = new LoginViewModel(_mockNavigationService.Object, _auth.Object, _mockDialogService.Object);
+            // Arrange
+            SignupViewModel vm = new SignupViewModel(_mockNavigationService.Object, _auth.Object, _mockDialogService.Object );
 
             var user = users[0];
             var password = "Testing321";
-            var token = Guid.NewGuid().ToString();
 
             vm.Email = user.email;
             vm.Password = password;
 
-            _auth.Setup(x => x.LoginWithEmailPassword(user.email, password))
-                .ReturnsAsync(token);
+            _auth.Setup(x => x.SignUpWithEmailPassword(user.email, password))
+                .Returns(true);
 
-            _auth.Setup(x => x.GetCurrentUser())
-                .ReturnsAsync(user);
-
-            // Act 
-            await vm.OnLoginCommand();
-
-            // Asssert
-            _auth.Verify(x => x.LoginWithEmailPassword(user.email, password), Times.Once);
-            _mockNavigationService.Verify(x => x.GoTo(ViewNames.HomepageView), Times.Once);
-        }
-
-        [Fact]
-        public async Task SignupCommandTest()
-        {
-            // Arrange
-            LoginViewModel vm = new LoginViewModel(_mockNavigationService.Object, _auth.Object, _mockDialogService.Object);
+            _mockDialogService.Setup(x => x.ShowDialogAsync(Strings.Congratulations, Strings.Account_Created_Success, Strings.Login));
 
             // Act
-            await vm.OnGoSignupCommand();
+            await vm.OnSignupCommand();
 
             // Assert
-            _mockNavigationService.Verify(x => x.GoTo(ViewNames.SignupPage), Times.Once);
+            _auth.Verify(x => x.SignUpWithEmailPassword(user.email, password), Times.Once);
+            _mockNavigationService.Verify(x => x.GoTo(ViewNames.LoginPage), Times.Once);
         }
     }
 }

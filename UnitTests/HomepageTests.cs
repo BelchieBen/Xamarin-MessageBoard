@@ -9,6 +9,8 @@ using Xunit;
 using Xunit.Abstractions;
 using MessageBoard.Models;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace UnitTests
 {
@@ -16,6 +18,7 @@ namespace UnitTests
     {
         private readonly Mock<INavigationService> _mockNavigationService;
         private readonly Mock<IMessageDataService> _mockMessageDataService;
+        private readonly Mock<IDialogService> _mockDialogService;
         private readonly Mock<IFirebaseAuth> _auth;
         private List<User> users = new List<User>
         {
@@ -37,6 +40,7 @@ namespace UnitTests
             Xamarin.Forms.Mocks.MockForms.Init();
             _mockMessageDataService = new Mock<IMessageDataService>();
             _mockNavigationService = new Mock<INavigationService>();
+            _mockDialogService = new Mock<IDialogService>();
             _auth = new Mock<IFirebaseAuth>();
         }
 
@@ -50,13 +54,23 @@ namespace UnitTests
                 User = "testuser1@email.com",
             };
         }
-        
+
+        private  ObservableCollection<Message> MessageList()
+        {
+            ObservableCollection<Message> messages = new ObservableCollection<Message>()
+            {
+                new Message{Id=1, MessageTitle="Post1", Description="Hello", PostDate=DateTime.Today, User="benbelcher112@gmail.com"},
+                new Message{Id=2, MessageTitle="Test Post", Description="Bye", PostDate=DateTime.Today, User="belchieben112@gmail.com"},
+                new Message{Id=3, MessageTitle="New Post Test", Description="Greetings", PostDate=DateTime.Today, User="benbelcher112@gmail.com"},
+            };
+            return messages;
+        }
 
         [Fact]
         public async Task NewCommandTest()
         {
             // Arrange
-            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object);
+            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object, _mockDialogService.Object);
 
             // Act
             await vm.OnNewCommand();
@@ -70,7 +84,7 @@ namespace UnitTests
         public async Task RefreshMessagesTest()
         {
             // Arrange
-            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object);
+            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object, _mockDialogService.Object);
 
             // Act
             await vm.OnRefreshCommand();
@@ -83,7 +97,7 @@ namespace UnitTests
         public async Task SelectedMessageTestNotAuthor()
         {
             // Arrange
-            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object);
+            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object, _mockDialogService.Object);
 
             var message = GetMessage();
 
@@ -103,7 +117,7 @@ namespace UnitTests
         public async Task SelectedMessageTestAuthor()
         {
             // Arrange
-            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object);
+            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object, _mockDialogService.Object);
 
             var message = GetMessage();
 
@@ -117,6 +131,38 @@ namespace UnitTests
             // Assert
             Assert.NotEqual(message.User, user.email);
             _mockNavigationService.Verify(x => x.NavigateTo(ViewNames.MessageDetailReadonlyPage, message), Times.Once);
+        }
+
+        [Fact]
+        public async Task LogoutCommandTest()
+        {
+            // Arrange 
+            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object, _mockDialogService.Object);
+            _auth.Setup(x => x.Logout());
+
+            // Act
+            await vm.OnLogoutCommand();
+
+            // Assert
+            _mockNavigationService.Verify(x => x.GoTo(ViewNames.LoginPage), Times.Once);
+        }
+
+        [Fact]
+        public async Task SearchbarTest()
+        {
+            // Arrange
+            HomepageViewModel vm = new HomepageViewModel(_mockMessageDataService.Object, _mockNavigationService.Object, _auth.Object, _mockDialogService.Object);
+
+            var searchText = "Test";
+            var messages = MessageList();
+            vm.SearchText = searchText;
+            vm.Messages = messages;
+
+            // Act
+            await vm.OnSearchCommand();
+
+            // Assert
+            Assert.Equal(2, vm.Messages.Count);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MessageBoard.Services;
+using MessageBoard.Styles;
 using MessageBoard.Utility;
 using MvvmHelpers.Commands;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace MessageBoard.ViewModels
@@ -13,7 +15,8 @@ namespace MessageBoard.ViewModels
     public class SignupViewModel: BaseViewModel
     {
         private INavigationService _navigationService;
-        IFirebaseAuth _auth;
+        private IFirebaseAuth _auth;
+        private IDialogService _dialogService;
 
         public ICommand SignupCommand { get; }
 
@@ -39,10 +42,11 @@ namespace MessageBoard.ViewModels
             }
         }
 
-        public SignupViewModel(NavigationService navigationService)
+        public SignupViewModel(INavigationService navigationService, IFirebaseAuth auth, IDialogService dialogService)
         {
             _navigationService = navigationService;
-            _auth = DependencyService.Get<IFirebaseAuth>();
+            _auth = auth;
+            _dialogService = dialogService;
 
             SignupCommand = new AsyncCommand(() => OnSignupCommand());
 
@@ -55,12 +59,12 @@ namespace MessageBoard.ViewModels
             var user =  _auth.SignUpWithEmailPassword(email, password);
             if (user)
             {
-                await Application.Current.MainPage.DisplayAlert("Congratulations!", "Account Created Successfully", "Login");
+                await _dialogService.ShowDialogAsync(Strings.Congratulations, Strings.Account_Created_Success, Strings.Login);
                 await _navigationService.GoTo(ViewNames.LoginPage);
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Signup Failed", "Something went wrong. Please Try again!", "Try again");
+                await _dialogService.ShowDialogAsync(Strings.Signup_Failed, Strings.Something_Went_Wrong, Strings.Try_Again);
             }
         }
     }

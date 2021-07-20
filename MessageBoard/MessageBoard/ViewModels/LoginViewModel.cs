@@ -9,6 +9,7 @@ using MessageBoard.Services;
 using MessageBoard.Utility;
 using Xamarin.Essentials;
 using Acr.UserDialogs;
+using MessageBoard.Styles;
 
 namespace MessageBoard.ViewModels
 {
@@ -16,6 +17,7 @@ namespace MessageBoard.ViewModels
     {
         private INavigationService _navigationService;
         private IFirebaseAuth _auth;
+        private IDialogService _dialogService;
         public ICommand LoginCommand { get; }
         public ICommand GoSignupCommand { get; }
 
@@ -41,10 +43,11 @@ namespace MessageBoard.ViewModels
             }
         }
 
-        public LoginViewModel(INavigationService navigationService, IFirebaseAuth auth)
+        public LoginViewModel(INavigationService navigationService, IFirebaseAuth auth, IDialogService dialogService)
         {
             _navigationService = navigationService;
             _auth = auth;
+            _dialogService = dialogService;
             LoginCommand = new AsyncCommand(() => OnLoginCommand());
             GoSignupCommand = new AsyncCommand(() => OnGoSignupCommand());
 
@@ -59,12 +62,16 @@ namespace MessageBoard.ViewModels
             if (!string.IsNullOrWhiteSpace(Token))
             {
                 await _auth.GetCurrentUser();
-                Preferences.Set(PreferenceKeys.USER_TOKEN, Token);//Set preference but dont know where to fetch it when app is initalized
                 await _navigationService.GoTo(ViewNames.HomepageView);
+                if (DeviceInfo.Platform == DevicePlatform.Unknown)
+                    return;
+                else
+                    Preferences.Set(PreferenceKeys.USER_TOKEN, Token);//Set preference but dont know where to fetch it when app is initalized
+                
             }
             else
             {
-                UserDialogs.Instance.Alert("Email or password is incorrect. Please Try again!", "Authentication Failed" ,"Ok");
+                await _dialogService.ShowDialogAsync(Strings.Incorect_Email_or_Password, Strings.Auth_Failed ,Strings.Try_Again);
             }
         }
 
@@ -75,7 +82,7 @@ namespace MessageBoard.ViewModels
 
         private async void ShowError()
         {
-            await Application.Current.MainPage.DisplayAlert("Authentication Failed", "Email or password is incorrect. Please Try again!", "Try again");
+            await _dialogService.ShowDialogAsync(Strings.Incorect_Email_or_Password, Strings.Auth_Failed, Strings.Try_Again);
         }
     }
 }

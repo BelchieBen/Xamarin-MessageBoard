@@ -13,6 +13,7 @@ namespace MessageBoard
         public static MessageDataService MessageDataService { get; } = new MessageDataService();
         public static NavigationService NavigationService { get; } = new NavigationService();
         public static IFirebaseAuth FirebaseAuth { get; } = DependencyService.Get<IFirebaseAuth>();
+        public static DialogService DialogService { get; } = new DialogService();
 
         public App()
         {
@@ -24,6 +25,7 @@ namespace MessageBoard
             NavigationService.Configure(ViewNames.SignupPage, typeof(SignupView));
             NavigationService.Configure(ViewNames.MessageDetailReadonlyPage, typeof(MessageDetailReadonlyView));
             NavigationService.Configure(ViewNames.NewMessagePage, typeof(NewMessageView));
+            NavigationService.Configure(ViewNames.ProfileView, typeof(ProfileView));
 
             string userToken = Preferences.Get(PreferenceKeys.USER_TOKEN, "");
             if (!string.IsNullOrEmpty(userToken))

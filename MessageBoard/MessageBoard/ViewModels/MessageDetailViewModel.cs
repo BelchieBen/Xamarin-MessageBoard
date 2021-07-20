@@ -1,5 +1,6 @@
 ﻿using MessageBoard.Models;
 using MessageBoard.Services;
+using MessageBoard.Styles;
 using MessageBoard.Utility;
 using MvvmHelpers.Commands;
 using System;
@@ -17,6 +18,7 @@ namespace MessageBoard.ViewModels
         private Message _selectedMessage;
         private IMessageDataService _messageDataService;
         private INavigationService _navigationService;
+        private IDialogService _dialogService;
 
         public AsyncCommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
@@ -32,10 +34,11 @@ namespace MessageBoard.ViewModels
             }
         }
 
-        public MessageDetailViewModel(IMessageDataService messageDataService, INavigationService navigationService)
+        public MessageDetailViewModel(IMessageDataService messageDataService, INavigationService navigationService, IDialogService dialogService)
         {
             _messageDataService = messageDataService;
             _navigationService = navigationService;
+            _dialogService = dialogService;
 
             SelectedMessage = new Message();
             SaveCommand = new AsyncCommand(() => OnSaveCommand ());
@@ -59,7 +62,8 @@ namespace MessageBoard.ViewModels
             {
                await  _messageDataService.UpdatedFirebaseMessage(SelectedMessage.MessageTitle, SelectedMessage.Description, SelectedMessage.Id, SelectedMessage.User);
             }
-             _navigationService.GoBack();
+            _dialogService.ShowToastMessage(Strings.Message_Posted);
+            _navigationService.GoBack();
         }
 
         public void OnCancelCommand()
@@ -70,6 +74,7 @@ namespace MessageBoard.ViewModels
         public async Task OnDeleteCommand()
         {
             await _messageDataService.DeleteFirebaseMessage(SelectedMessage.MessageTitle, SelectedMessage.Description, SelectedMessage.Id);
+            _dialogService.ShowToastMessage(Strings.Message_Deleted);
             _navigationService.PopPage();
         }
 

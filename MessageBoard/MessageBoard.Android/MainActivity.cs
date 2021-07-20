@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.OS;
 using Firebase;
 using Acr.UserDialogs;
+using FFImageLoading.Forms.Platform;
 
 namespace MessageBoard.Droid
 {
@@ -22,6 +23,7 @@ namespace MessageBoard.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FirebaseApp.InitializeApp(Application.Context);
             UserDialogs.Init(this);
+            CachedImageRenderer.Init(true);
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
