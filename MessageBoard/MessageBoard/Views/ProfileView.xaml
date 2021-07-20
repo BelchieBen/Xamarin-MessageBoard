@@ -12,24 +12,23 @@
               VerticalOptions="CenterAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.5*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <ContentView BackgroundColor="Blue" Grid.Row="1"/>
             <ContentView BackgroundColor="Yellow" Grid.Row="2"/>
             <Image Grid.Row="0" 
                    VerticalOptions="Fill"
                    Aspect="AspectFill"
                    Source="new_profile_background.png"/>
-            <Image Grid.Row="0"
-                   Margin="70"
+            <Image Grid.Row="0" 
+                   Margin="60,60,60,90"
                    Source="profile.png"/>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -41,15 +40,94 @@
                        Grid.Column="1"
                        HorizontalOptions="Center"
                        FontAttributes="Bold"
-                       FontSize="Medium"/>
+                       FontSize="Large"
+                       Margin="0,25,0,0"/>
                 <Label Text="User1@email.com"
                        Grid.Row="3"
                        Grid.Column="0"
+                       Grid.ColumnSpan="3"
                        HorizontalOptions="Center"
                        VerticalOptions="End"
-                       Margin="0,0,0,10"/>
-            </Grid>
+                       FontSize="Medium"
+                       Margin="0,0,0,20"/>
 
+            </Grid>
+            <Label Grid.Row="1"
+                   Text="Your Recent Posts"
+                   Padding="16"
+                   FontSize="Title"/>
+            <ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame 
+                                VerticalOptions="CenterAndExpand"  
+                                Margin="20"  
+                                HasShadow="True" 
+                                CornerRadius="10" 
+                                Padding="16" 
+                                BackgroundColor="White" 
+                                BorderColor="Gray">
+                                <Grid VerticalOptions="FillAndExpand" BackgroundColor="#f4f5f6">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="20"></RowDefinition>
+                                        <RowDefinition Height="20"></RowDefinition>
+                                        <RowDefinition Height="2"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="40"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label 
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        VerticalTextAlignment="Center"
+                                        Text="{Binding SelectedMessage.MessageTitle} " 
+                                        FontSize="Title"
+                                        FontAttributes="Bold"/>
+
+                                    <Label
+                                        Grid.Row="1"
+                                        VerticalTextAlignment="Center"
+                                        Text="{Binding SelectedMessage.PostDate}" 
+                                        FontSize="Small"/>
+                                    <Label
+                                        Grid.Row="2"
+                                        VerticalTextAlignment="Center"
+                                        Text="{Binding SelectedMessage.User}" 
+                                        FontSize="Small"/>
+                                    <BoxView 
+                                        Grid.ColumnSpan="2"
+                                        Grid.Row="3"
+                                        HorizontalOptions="Fill" 
+                                        Color="Gray" 
+                                        HeightRequest="2"/>
+
+                                    <Label
+                                        Grid.ColumnSpan="2"
+                                        Grid.Row="4"
+                                        Text="{Binding SelectedMessage.Description}" 
+                                        FontSize="Small"
+                                        Margin="0,0,0,15"/>
+
+                                    <Button
+                                        Grid.ColumnSpan="2"
+                                        Grid.Row="5"
+                                        Command="{Binding CancelCommand}"
+                                        Text="Go Back" 
+                                        CornerRadius="10"
+                                        BackgroundColor="#e23e8c" 
+                                        TextColor="White"/>
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
