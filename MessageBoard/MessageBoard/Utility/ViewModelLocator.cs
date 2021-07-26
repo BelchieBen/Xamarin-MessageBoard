@@ -9,5 +9,6 @@ namespace MessageBoard.Utility
         public static LoginViewModel LoginViewModel { get; set; } = new LoginViewModel(App.NavigationService, App.FirebaseAuth, App.DialogService);
         public static SignupViewModel SignupViewModel { get; set; } = new SignupViewModel(App.NavigationService, App.FirebaseAuth, App.DialogService);
         public static ProfileViewModel ProfileViewModel { get; set; } = new ProfileViewModel(App.MessageDataService, App.NavigationService, App.FirebaseAuth, App.DialogService);
+        public static EditProfileViewModel EditProfileViewModel { get; set; } = new EditProfileViewModel(App.NavigationService, App.FirebaseAuth, App.DialogService);
     }
 }

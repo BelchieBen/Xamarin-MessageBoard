@@ -13,5 +13,7 @@ namespace MessageBoard.Services
         Task<User> GetCurrentUser();
         void SetCurrentUser();
         void Logout();
+        Task AddDiaplayName(string usrName);
+        event EventHandler UserUpdated;
     }
 }

@@ -18,6 +18,7 @@ namespace MessageBoard.Droid
 {
     public class AuthDroid : IFirebaseAuth
     {
+        public event EventHandler UserUpdated;
         public async Task<string> LoginWithEmailPassword(string email, string password)
         {
             try
@@ -61,6 +62,18 @@ namespace MessageBoard.Droid
         }
 
         private SQLiteAsyncConnection db;
+
+        public async Task AddDiaplayName(string usrName)
+        {
+            var db = await InitializatizeDb();
+            var userId = FirebaseAuth.Instance.CurrentUser.Uid;
+            var userEmail = FirebaseAuth.Instance.CurrentUser.Email;
+
+            var user = await db.GetAsync<User>(x => x.Id == userId);
+            user.Username = usrName;
+            await db.UpdateAsync(user);
+            UserUpdated?.Invoke(this, new EventArgs());
+        }
 
         public async Task<User> GetCurrentUser()
         {

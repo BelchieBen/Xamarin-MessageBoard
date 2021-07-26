@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fontawesome="clr-namespace:MessageBoard.Styles"
+             x:Class="MessageBoard.Views.EditProfileView"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid HorizontalOptions="Fill" 
+              VerticalOptions="CenterAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="2"
+                    Grid.Column="2"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.Save}"
+                    BackgroundColor="Transparent"
+                    Margin="10"
+                    CornerRadius="20"
+                    FontFamily="{StaticResource FontAwesomeSolid}" 
+                    FontSize="Large"
+                    Command="{Binding SaveProfileCommand}"/>
+            <Button Grid.Row="2"
+                    Grid.Column="0"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.User}"
+                    BackgroundColor="Transparent"
+                    Margin="10"
+                    CornerRadius="20"
+                    FontFamily="{StaticResource FontAwesomeSolid}" 
+                    FontSize="Large"
+                    Command="{Binding BackToProfileCommand}"/>
+            <Image Grid.Row="0" 
+                   Grid.ColumnSpan="3"
+                   VerticalOptions="Fill"
+                   Aspect="AspectFill"
+                   Source="new_profile_background.png"/>
+            <Image Grid.Row="0" 
+                   Grid.ColumnSpan="3"
+                   Margin="60,60,60,90"
+                   Source="profile.png"/>
+
+            <Grid Grid.Row="1"
+                  Grid.ColumnSpan="3"
+                  Margin="24"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0"
+                   Text="Edit your profile"
+                   FontSize="Title"/>
+
+                <Label Grid.Row="1"
+                   Text="Username: "
+                   FontSize="Medium"/>
+
+                <Frame Grid.Row="1"
+                       Grid.Column="1"
+                       CornerRadius="10"
+                       VerticalOptions="Center"
+                       Padding="0">
+                    <Entry Text="{Binding username}"                     
+                       HorizontalOptions="Center"
+                       FontSize="Small"
+                       BackgroundColor="White"
+                       Margin="0,0,0,0"/>
+                </Frame>
+
+                <Label Grid.Row="2"
+                   Text="Current Email: "
+                   VerticalOptions="Center"
+                   FontSize="Medium"/>
+
+                <Frame Grid.Row="2"
+                       Grid.Column="1"
+                       CornerRadius="10"                      
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Padding="0">
+                    <Label Text="{Binding CurrentUser.email, Mode=TwoWay}"
+                        FontSize="Small"
+                        Margin="5"
+                        BackgroundColor="White"/>
+                </Frame>
+            </Grid>
+            
+
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

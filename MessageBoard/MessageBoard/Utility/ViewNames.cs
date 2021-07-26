@@ -13,5 +13,6 @@ namespace MessageBoard.Utility
         public const string MessageDetailReadonlyPage = "MessageDetailReadonlyView";
         public const string NewMessagePage = "NewMessageView";
         public const string ProfileView = "ProfileView";
+        public const string EditProfile = "EditProfile";
     }
 }

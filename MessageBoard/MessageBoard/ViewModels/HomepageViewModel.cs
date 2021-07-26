@@ -75,6 +75,7 @@ namespace MessageBoard.ViewModels
         private async void OnUpdateMessage(object sender, EventArgs e)
         {
             await FetchMessages();
+            await _auth.GetCurrentUser();
         }
 
         private async Task FetchMessages()
@@ -105,6 +106,7 @@ namespace MessageBoard.ViewModels
         public async Task OnRefreshCommand()
         {
             await FetchMessages();
+            await _auth.GetCurrentUser();
         }
 
         public async Task OnNewCommand()

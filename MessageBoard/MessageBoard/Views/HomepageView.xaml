@@ -6,9 +6,8 @@
              xmlns:behaviours="clr-namespace:MessageBoard.Behaviours"
              xmlns:fontawesome="clr-namespace:MessageBoard.Styles"
              x:Class="MessageBoard.Views.HomepageView"
-             NavigationPage.HasBackButton="False"
-             Title="Welcome ">
-    <ContentPage.ToolbarItems>
+             NavigationPage.HasNavigationBar="False">
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem 
              Command="{Binding ProfileCommand}">
             <ToolbarItem.IconImageSource>
@@ -34,7 +33,7 @@
                                  Size="Medium"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
     <ContentPage.Content>
 
         <StackLayout VerticalOptions="FillAndExpand">
@@ -106,15 +105,41 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
+            <Grid MinimumHeightRequest="70">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="2"
+                        Text="{x:Static fontawesome:FontAwesomeIcons.Plus}"
+                        BackgroundColor="Transparent"
+                        Margin="10"
+                        CornerRadius="20"
+                        FontFamily="{StaticResource FontAwesomeSolid}" 
+                        FontSize="Large"
+                         Command="{Binding NewCommand}"/>
+                <Button Grid.Column="1"
+                        Text="{x:Static fontawesome:FontAwesomeIcons.User}"
+                        BackgroundColor="Transparent"
+                        Margin="10"
+                        CornerRadius="20"
+                        FontFamily="{StaticResource FontAwesomeSolid}" 
+                        FontSize="Large"
+                        Command="{Binding ProfileCommand}"/>
+                <Button Grid.Column="0"
+                        Text="{x:Static fontawesome:FontAwesomeIcons.SignOutAlt}" 
+                        FontFamily="{StaticResource FontAwesomeSolid}" 
+                        FontSize="Large"
+                        Margin="10"
+                        CornerRadius="20"
+                        BackgroundColor="Transparent" 
+                        Command="{Binding LogoutCommand}"/>
+            </Grid>
             
 
-            <Button 
-                Text="Logout" 
-                BackgroundColor="#e43f8f" 
-                TextColor="White" 
-                Margin="20,20" 
-                CornerRadius="10"
-                Command="{Binding LogoutCommand}"/>
+            
             
         </StackLayout>
         

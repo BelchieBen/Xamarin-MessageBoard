@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,7 @@ namespace MessageBoard.Models
         private string _username;
         private string _email;
 
+        [PrimaryKey]
         public string Id
         {
             get => _id;

@@ -2,28 +2,46 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontawesome="clr-namespace:MessageBoard.Styles"
-             xmlns:svgg="clr-namespace:FFImageLoading.Cache;assembly=FFImageLoading"
-             xmlns:svgImg="clr-namespace:FFImageLoading;assembly=FFImageLoading"
-             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="MessageBoard.Views.ProfileView"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <Grid HorizontalOptions="CenterAndExpand" 
+        <Grid HorizontalOptions="Fill" 
               VerticalOptions="CenterAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.5*"/>
                 <RowDefinition Height="1.5*"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <ContentView BackgroundColor="Yellow" Grid.Row="2"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="2"
+                    Grid.Column="2"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.UserEdit}"
+                    BackgroundColor="Transparent"
+                    FontFamily="{StaticResource FontAwesomeSolid}" 
+                    FontSize="Large"
+                    Command="{Binding EditProfileCommand}"/>
+            <Button Grid.Row="2"
+                    Grid.Column="0"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.Home}"
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="Large"
+                    BackgroundColor="Transparent"
+                    Command="{Binding BackToMessagesCommand}"/>
             <Image Grid.Row="0" 
+                   Grid.ColumnSpan="3"
                    VerticalOptions="Fill"
                    Aspect="AspectFill"
                    Source="new_profile_background.png"/>
             <Image Grid.Row="0" 
+                   Grid.ColumnSpan="3"
                    Margin="60,60,60,90"
                    Source="profile.png"/>
-            <Grid>
+            <Grid
+                Grid.ColumnSpan="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -35,28 +53,45 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label Text="User 1"
-                       Grid.Row="3"
+                <Frame Grid.Row="3"
                        Grid.Column="1"
+                       CornerRadius="10"
+                       VerticalOptions="End"
+                       Padding="0">
+                    <Label Text="{Binding CurrentUser.Username}"                     
                        HorizontalOptions="Center"
                        FontAttributes="Bold"
                        FontSize="Large"
-                       Margin="0,25,0,0"/>
-                <Label Text="User1@email.com"
-                       Grid.Row="3"
+                       BackgroundColor="White"
+                       Margin="0,0,0,0"/>
+                </Frame>
+
+                <Frame Grid.Row="4"
                        Grid.Column="0"
                        Grid.ColumnSpan="3"
+                       CornerRadius="10"                      
                        HorizontalOptions="Center"
                        VerticalOptions="End"
-                       FontSize="Medium"
-                       Margin="0,0,0,20"/>
+                       Padding="0"
+                       Margin="0,0,0,10">
+                    <Label Text="{Binding CurrentUser.email}"
+                           FontSize="Medium"
+                           Padding="5"
+                           BackgroundColor="White"/>
+                </Frame>
+                
 
             </Grid>
             <Label Grid.Row="1"
+                   Grid.ColumnSpan="3"
                    Text="Your Recent Posts"
                    Padding="16"
                    FontSize="Title"/>
-            <ListView>
+            <ListView ItemsSource="{Binding UserMessages}"
+                      Grid.Row="1"
+                      Grid.ColumnSpan="3"
+                      Margin="0,50,0,0"
+                      HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -68,7 +103,7 @@
                                 Padding="16" 
                                 BackgroundColor="White" 
                                 BorderColor="Gray">
-                                <Grid VerticalOptions="FillAndExpand" BackgroundColor="#f4f5f6">
+                                <Grid VerticalOptions="FillAndExpand" BackgroundColor="White">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"></RowDefinition>
                                         <RowDefinition Height="20"></RowDefinition>
@@ -86,19 +121,19 @@
                                         Grid.Row="0"
                                         Grid.Column="0"
                                         VerticalTextAlignment="Center"
-                                        Text="{Binding SelectedMessage.MessageTitle} " 
+                                        Text="{Binding MessageTitle} " 
                                         FontSize="Title"
                                         FontAttributes="Bold"/>
 
                                     <Label
                                         Grid.Row="1"
                                         VerticalTextAlignment="Center"
-                                        Text="{Binding SelectedMessage.PostDate}" 
+                                        Text="{Binding PostDate}" 
                                         FontSize="Small"/>
                                     <Label
                                         Grid.Row="2"
                                         VerticalTextAlignment="Center"
-                                        Text="{Binding SelectedMessage.User}" 
+                                        Text="{Binding User}" 
                                         FontSize="Small"/>
                                     <BoxView 
                                         Grid.ColumnSpan="2"
@@ -110,18 +145,9 @@
                                     <Label
                                         Grid.ColumnSpan="2"
                                         Grid.Row="4"
-                                        Text="{Binding SelectedMessage.Description}" 
+                                        Text="{Binding Description}" 
                                         FontSize="Small"
                                         Margin="0,0,0,15"/>
-
-                                    <Button
-                                        Grid.ColumnSpan="2"
-                                        Grid.Row="5"
-                                        Command="{Binding CancelCommand}"
-                                        Text="Go Back" 
-                                        CornerRadius="10"
-                                        BackgroundColor="#e23e8c" 
-                                        TextColor="White"/>
                                 </Grid>
                             </Frame>
                         </ViewCell>

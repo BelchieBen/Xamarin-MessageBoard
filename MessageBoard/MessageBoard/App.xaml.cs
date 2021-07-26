@@ -26,6 +26,7 @@ namespace MessageBoard
             NavigationService.Configure(ViewNames.MessageDetailReadonlyPage, typeof(MessageDetailReadonlyView));
             NavigationService.Configure(ViewNames.NewMessagePage, typeof(NewMessageView));
             NavigationService.Configure(ViewNames.ProfileView, typeof(ProfileView));
+            NavigationService.Configure(ViewNames.EditProfile, typeof(EditProfileView));
 
             string userToken = Preferences.Get(PreferenceKeys.USER_TOKEN, "");
             if (!string.IsNullOrEmpty(userToken))
