@@ -18,6 +18,7 @@ namespace MessageBoard.ViewModels
         private INavigationService _navigationService;
         private IFirebaseAuth _auth;
         private IDialogService _dialogService;
+        private IUserDataService _userDataService;
         public ICommand LoginCommand { get; }
         public ICommand GoSignupCommand { get; }
 
@@ -43,11 +44,12 @@ namespace MessageBoard.ViewModels
             }
         }
 
-        public LoginViewModel(INavigationService navigationService, IFirebaseAuth auth, IDialogService dialogService)
+        public LoginViewModel(INavigationService navigationService, IFirebaseAuth auth, IDialogService dialogService, IUserDataService userDataService)
         {
             _navigationService = navigationService;
             _auth = auth;
             _dialogService = dialogService;
+            _userDataService = userDataService;
             LoginCommand = new AsyncCommand(() => OnLoginCommand());
             GoSignupCommand = new AsyncCommand(() => OnGoSignupCommand());
 
@@ -62,6 +64,7 @@ namespace MessageBoard.ViewModels
             if (!string.IsNullOrWhiteSpace(Token))
             {
                 await _auth.GetCurrentUser();
+                await _userDataService.FirebaseAdUser(Token);
                 await _navigationService.GoTo(ViewNames.HomepageView);
                 if (DeviceInfo.Platform == DevicePlatform.Unknown)
                     return;

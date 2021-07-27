@@ -14,6 +14,7 @@ namespace MessageBoard
         public static NavigationService NavigationService { get; } = new NavigationService();
         public static IFirebaseAuth FirebaseAuth { get; } = DependencyService.Get<IFirebaseAuth>();
         public static DialogService DialogService { get; } = new DialogService();
+        public static UserDataService UserDataService { get; } = new UserDataService(FirebaseAuth);
 
         public App()
         {

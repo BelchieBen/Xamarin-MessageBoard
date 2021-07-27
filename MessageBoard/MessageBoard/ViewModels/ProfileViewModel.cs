@@ -66,12 +66,19 @@ namespace MessageBoard.ViewModels
             EditProfileCommand = new AsyncCommand(() => OnEditProfileCommand());
             Task.Run(async () => await FetchMessages());
             _auth.UserUpdated += OnUserUpdated;
+            _messageDataService.MessageUpdated += OnUpdateMessage;
         }
 
         private async void OnUserUpdated(object sender, EventArgs e)
         {
             await FetchMessages();
             await GetTheCurrentUser();
+        }
+
+        private async void OnUpdateMessage(object sender, EventArgs e)
+        {
+            await FetchMessages();
+            await _auth.GetCurrentUser();
         }
 
         private async Task FetchMessages()
