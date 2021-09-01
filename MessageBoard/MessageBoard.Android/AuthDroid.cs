@@ -31,7 +31,7 @@ namespace MessageBoard.Droid
                 }
                 return token?.Token;
             }
-            catch
+            catch (Exception e)
             {
                 return "";
             }
@@ -50,22 +50,21 @@ namespace MessageBoard.Droid
             }
         }
 
-        public async Task<SQLiteAsyncConnection> InitializatizeDb()
+        static SQLiteAsyncConnection db;
+        public static async Task<SQLiteAsyncConnection> InitializatizeDb()
         {
             if (db == null)
             {
-                var databasePath = Path.Combine(FileSystem.AppDataDirectory, "MessageBoard.db");
+                var databasePath = Path.Combine(FileSystem.AppDataDirectory, "MessageBoardUsers.db");
                 db = new SQLiteAsyncConnection(databasePath);
                 await db.CreateTableAsync<User>();
-            }          
+            }
             return db;
         }
 
-        private SQLiteAsyncConnection db;
-
         public async Task AddDiaplayName(string usrName)
         {
-            var db = await InitializatizeDb();
+            await InitializatizeDb();
             var userId = FirebaseAuth.Instance.CurrentUser.Uid;
             var userEmail = FirebaseAuth.Instance.CurrentUser.Email;
 
@@ -77,27 +76,26 @@ namespace MessageBoard.Droid
 
         public async Task<User> GetCurrentUser()
         {
-            var db = await InitializatizeDb();
+            await InitializatizeDb();
             var userEmail = FirebaseAuth.Instance.CurrentUser.Email;
             var userId = FirebaseAuth.Instance.CurrentUser.Uid; 
-            var User = await db.GetAsync<User>(x => x.Id == userId);
-            return User;
+            var usr = await db.GetAsync<User>(x => x.Id == userId);
+            return usr;
         }
 
         public async void SetCurrentUser()
         {
-            var db = await InitializatizeDb ();
+            await InitializatizeDb ();
             var userEmail = FirebaseAuth.Instance.CurrentUser.Email;
             var userId = FirebaseAuth.Instance.CurrentUser.Uid;
             
-            var User = new User
+            var usr = new User
             {
                 Id = userId,
                 email = userEmail,
             };
             //Globals.userKey = User;
-            await db.InsertAsync(User);
-
+            await db.InsertAsync(usr);
         }
 
         public void Logout()

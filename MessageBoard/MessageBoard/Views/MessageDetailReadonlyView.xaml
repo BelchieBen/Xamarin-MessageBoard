@@ -13,7 +13,7 @@
             Padding="16" 
             BackgroundColor="White" 
             BorderColor="Gray">
-            <Grid VerticalOptions="FillAndExpand" BackgroundColor="#f4f5f6">
+            <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="20"></RowDefinition>

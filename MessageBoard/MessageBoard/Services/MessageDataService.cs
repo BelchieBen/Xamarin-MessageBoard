@@ -132,7 +132,11 @@ namespace MessageBoard.Services
                 .Child("Messages")
                 .OnceAsync<Message>()).FirstOrDefault
                 (a => a.Object.Id == id);
-            await _client.Child("Messages").Child(deleteMessage.Key).DeleteAsync();
+            await _client
+                .Child("Messages")
+                .Child(deleteMessage.Key)
+                .DeleteAsync();
+            MessageUpdated?.Invoke(this, new EventArgs());
         }
 
         public async Task NewMessage(string messageTitle, string description)

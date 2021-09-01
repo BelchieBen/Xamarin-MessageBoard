@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace MessageBoard.Models
 {
@@ -10,6 +11,7 @@ namespace MessageBoard.Models
         private string _id;
         private string _username;
         private string _email;
+        private Image _profileImg;
 
         [PrimaryKey]
         public string Id
@@ -36,6 +38,15 @@ namespace MessageBoard.Models
             set
             {
                 _email = value;
+            }
+        }
+
+        public Image profileImg
+        {
+            get => _profileImg;
+            set
+            {
+                _profileImg = value;
             }
         }
     }

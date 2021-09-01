@@ -44,7 +44,8 @@
                 Text="{Binding SearchText}"
                 x:Name="SearchBar"
                 SearchCommand="{Binding SearchCommand, Mode=TwoWay}"
-                SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}">
+                SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
+                Margin="0,20,0,0">
                 <SearchBar.Behaviors>
                     <behaviours:SearchbarBehaviour/>
                 </SearchBar.Behaviors>

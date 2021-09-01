@@ -43,7 +43,8 @@
             <Image Grid.Row="0" 
                    Grid.ColumnSpan="3"
                    Margin="60,60,60,90"
-                   Source="profile.png"/>
+                   Source="{Binding profile.png}"/>
+            <Button Text="Change Image" Command="{Binding ImagePickerCommand}"/>
 
             <Grid Grid.Row="1"
                   Grid.ColumnSpan="3"
@@ -59,27 +60,29 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Row="0"
-                   Text="Edit your profile"
-                   FontSize="Title"/>
+                       Grid.ColumnSpan="2"
+                       Text="Edit your profile"
+                       FontSize="Title"/>
 
                 <Label Grid.Row="1"
-                   Text="Username: "
-                   FontSize="Medium"/>
+                       Text="Username: "
+                       FontSize="Medium"/>
 
                 <Frame Grid.Row="1"
                        Grid.Column="1"
                        CornerRadius="10"
                        VerticalOptions="Center"
                        Padding="0">
+
                     <Entry Text="{Binding username}"                     
-                       HorizontalOptions="Center"
-                       FontSize="Small"
-                       BackgroundColor="White"
-                       Margin="0,0,0,0"/>
+                           HorizontalOptions="CenterAndExpand"
+                           FontSize="Small"
+                           BackgroundColor="White"
+                           Margin="0,0,0,0"/>
                 </Frame>
 
                 <Label Grid.Row="2"
@@ -94,9 +97,11 @@
                        VerticalOptions="Center"
                        Padding="0">
                     <Label Text="{Binding CurrentUser.email, Mode=TwoWay}"
-                        FontSize="Small"
-                        Margin="5"
-                        BackgroundColor="White"/>
+                           FontSize="Small"
+                           Margin="5"
+                           Padding="7"
+                           HorizontalOptions="CenterAndExpand"
+                           BackgroundColor="White"/>
                 </Frame>
             </Grid>
             
